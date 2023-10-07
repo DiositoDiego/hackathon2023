@@ -6,6 +6,7 @@ import { useEffect } from "react";
 
 export default function AmountScreen() {
   const [showModal, setShowModal] = useState(false);
+  const [errorModal, setErrorModal] = useState(false);
   const [mount, setMount] = useState("50");
 
   const handleInputChange = (value) => {
@@ -16,6 +17,9 @@ export default function AmountScreen() {
     console.log("mount", mount);
     setShowModal(!showModal);
     //Enviar el monto al modal
+  };
+  const toggleErrorModal = () => {
+    setErrorModal(!errorModal);
   };
 
   return (
@@ -28,9 +32,6 @@ export default function AmountScreen() {
           type="material-community"
           name="cash-multiple"
           iconStyle={styles.icon}
-          onPress={() => {
-            handlePress();
-          }}
           size={50}
           color="#46D29D"
         />
@@ -47,8 +48,30 @@ export default function AmountScreen() {
         </TextInput>
         <Text style={styles.amount}>MXN</Text>
       </View>
+      {/* CONFIRMATION MODAL */}
+      <View style={styles.modalContainer}>
+        <Modal
+          visible={showModal}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={toggleModal}
+        >
+          <ButtonHack onPress={toggleModal} mount={mount} />
+        </Modal>
+      </View>
+      {/* ERROR MODAL */}
+      <View style={styles.modalContainer}>
+        <Modal
+          visible={errorModal}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={toggleErrorModal}
+        >
+          <ButtonHack onPress={toggleModal} mount={mount} />
+        </Modal>
+      </View>
       <View style={styles.footer}>
-        <View style={styles.boxShadoww}></View>
+        {/* <View style={styles.boxShadoww}></View> */}
         <View style={styles.buttonContainer}>
           <Button
             buttonStyle={styles.buttonStyle}
@@ -61,16 +84,6 @@ export default function AmountScreen() {
           />
         </View>
       </View>
-      <View style={styles.modalContainer}>
-        <Modal
-          visible={showModal}
-          animationType="slide"
-          transparent={true}
-          onRequestClose={toggleModal}
-        >
-          <ButtonHack onPress={toggleModal} mount={mount} />
-        </Modal>
-      </View>
     </View>
   );
 }
@@ -80,7 +93,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     width: "100%",
-    hwight: "10%",
   },
   header: {
     backgroundColor: "#46D29D",
@@ -108,13 +120,16 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 130,
     backgroundColor: "#fff",
+    borderColor: "#000",
+    elevation: 5,
   },
-  boxShadoww: {
+  /* boxShadoww: {
+    position: "absolute",
     width: "100%",
-    height: 20,
-    backgroundColor: "#fff",
-    elevation: 10,
-  },
+    height: 80,
+    backgroundColor: "transparent",
+    elevation: 78,
+  }, */
   footer: {
     width: "100%",
     height: 100,
@@ -140,7 +155,6 @@ const styles = StyleSheet.create({
     fontSize: 23,
     fontWeight: "bold",
     textAlign: "center",
-    fontStyle: "italic",
     marginBottom: 40,
   },
   subtitle2: {
