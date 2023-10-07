@@ -3,19 +3,95 @@ import { StyleSheet, Text, View, Modal, TextInput } from "react-native";
 import ButtonHack from "../components/ButtonHack";
 import { Button, Icon } from "react-native-elements";
 import { useEffect } from "react";
+import { API_CONTEXT } from "../utils/endpoint";
 
 export default function AmountScreen() {
   const [showModal, setShowModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
   const [mount, setMount] = useState("50");
+  const [customer, setCustomer] = useState({});
+  const [order, setOrder] = useState({});
+  const [charge, setCharge] = useState({});
 
   const handleInputChange = (value) => {
     setMount(value);
   };
 
+  const createCustomer = async () => {
+    setCustomer(await fetch(`${API_CONTEXT}/customer/test`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: "Misael Bahena Diaz",
+        email: "misaelbd@gmail.com",
+        phone: "7771091926"
+    })
+    .then((response) => response.json())
+    .then((data) => data)
+  }))
+
+  const createOrder = async () => {
+    setOrder(await fetch(`${API_CONTEXT}/order/test`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        paymentMethod: "cash",
+        customerId: customer.id,
+        productsList: [
+            {
+                name: "Sabritas",
+                quantity: 2,
+                unit_price: 10
+            },
+            {
+                name: "Barritas",
+                quantity: 3,
+                unit_price: 15
+            },
+            {
+                name: "Maruchan",
+                quantity: 4,
+                unit_price: 20
+            }
+        ]
+    }
+    )
+    .then((response) => response.json())
+    .then((data) => data)
+  }))
+  }
+
+  const createCharge = async () => {
+    setCharge(await fetch(`${API_CONTEXT}/charge/test`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        amount: 145,
+        paymentMethod: "cash",
+        orderId: order.id
+    })
+    .then((response) => response.json())
+    .then((data) => data)
+  }))
+  }
+
   const toggleModal = () => {
     console.log("mount", mount);
     setShowModal(!showModal);
+    try{
+      createCustomer();
+      createOrder();
+      createCharge();
+    } catch (error) {
+      console.log(error);
+      setErrorModal(true);
+    }
     //Enviar el monto al modal
   };
   const toggleErrorModal = () => {

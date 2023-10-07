@@ -1,0 +1,1 @@
+export const API_CONTEXT = "http://localhost:8080/api-hack";
