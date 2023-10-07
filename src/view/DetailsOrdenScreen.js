@@ -1,19 +1,27 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { Button, Icon } from "react-native-elements";
-import { Image } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { Image, Clipboard } from "react-native";
+import { useRoute } from "@react-navigation/native";
 
 export default function DetailsOrderScreen() {
-  const navigator = useNavigation();
+  const route = useRoute();
+  const mount = route.params ? route.params.mount : null;
+
+  console.log(mount);
+
   //variable para la referencia
   const [reference, setReference] = useState("1234-56789-10101");
-  const handlePress = () => {
-    // Aquí puedes agregar la lógica para manejar la información del formulario
 
-    navigator.replace("AmountScreenS");
+  const handleCopyToClipboard = () => {
+    Clipboard.setString(reference); // Copia el texto al portapapeles
   };
-
   return (
     <View style={styles.container}>
       <Image style={styles.img} source={require("../../assets/bonanza.png")} />
@@ -28,16 +36,24 @@ export default function DetailsOrderScreen() {
       <Text style={styles.subtitle4}>Referencia:</Text>
       <View style={styles.reference}>
         <Text style={styles.subtitle5}>{reference}</Text>
-        <Icon
-          type="material-community"
-          name="content-copy"
-          iconStyle={styles.icon}
-          onPress={() => {
-            handlePress();
-          }}
-          size={25}
-          color="#46D29D"
-        />
+        <TouchableOpacity onPress={handleCopyToClipboard}>
+          <Icon type="material-community" name="content-copy" size={30} />
+        </TouchableOpacity>
+      </View>
+      <Image
+        style={styles.img2}
+        source={require("../../assets/codigoDeBarras.png")}
+      ></Image>
+      <View>
+        <Text style={styles.subtitle4}>Pasos para pagar en caja:</Text>
+        <Text style={styles.subtitle32}>1.- Ve al OXXO</Text>
+        <Text style={styles.subtitle32}>
+          2.- Di que deseas pagar un servicio de Bonanza.
+        </Text>
+        <Text style={styles.subtitle32}>
+          3.- Muestra la referencia o el código de barras.
+        </Text>
+        <Text style={styles.subtitle32}>4.- Paga el monto requerido.</Text>
       </View>
     </View>
   );
@@ -102,6 +118,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 10,
   },
+  subtitle32: {
+    fontSize: 12,
+    marginTop: 10,
+    textAlign: "left",
+    marginBottom: 0,
+    color: "#40948D",
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
   subtitle4: {
     fontSize: 15,
     marginTop: 35,
@@ -132,7 +157,12 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 15,
   },
-  icon: {
-    //alinear hasta la orilla
+  img2: {
+    width: 300,
+    height: 90, // Ajusta la altura según sea necesario
+    alignSelf: "center",
+    marginTop: 30,
+    borderColor: "black",
+    borderWidth: 2,
   },
 });
