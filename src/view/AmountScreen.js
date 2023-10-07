@@ -17,77 +17,69 @@ export default function AmountScreen() {
     setMount(value);
   };
 
-  const createCustomer = async () => {
-    setCustomer(await fetch(`${API_CONTEXT}/customer/test`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: "Misael Bahena Diaz",
-        email: "misaelbd@gmail.com",
-        phone: "7771091926"
-    })
-    .then((response) => response.json())
-    .then((data) => data)
-  }))
-
   const createOrder = async () => {
-    setOrder(await fetch(`${API_CONTEXT}/order/test`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        paymentMethod: "cash",
-        customerId: customer.id,
-        productsList: [
+    setOrder(
+      await fetch(`${API_CONTEXT}/order/test`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          paymentMethod: "cash",
+          customerId: customer.id,
+          productsList: [
             {
-                name: "Sabritas",
-                quantity: 2,
-                unit_price: 10
+              name: "Sabritas",
+              quantity: 2,
+              unit_price: 10,
             },
             {
-                name: "Barritas",
-                quantity: 3,
-                unit_price: 15
+              name: "Barritas",
+              quantity: 3,
+              unit_price: 15,
             },
             {
-                name: "Maruchan",
-                quantity: 4,
-                unit_price: 20
-            }
-        ]
-    }
-    )
-    .then((response) => response.json())
-    .then((data) => data)
-  }))
-  }
+              name: "Maruchan",
+              quantity: 4,
+              unit_price: 20,
+            },
+          ],
+        }),
+      })
+        .then((response) => {
+          const response2 = response.json();
+          console.log({ response2 });
+          return response2;
+        })
+        .then((data) => data)
+    );
+  };
 
   const createCharge = async () => {
-    setCharge(await fetch(`${API_CONTEXT}/charge/test`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        amount: 145,
-        paymentMethod: "cash",
-        orderId: order.id
-    })
-    .then((response) => response.json())
-    .then((data) => data)
-  }))
-  }
+    setCharge(
+      await fetch(`${API_CONTEXT}/charge/test`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: 145,
+          paymentMethod: "cash",
+          orderId: order.id,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => data)
+    );
+  };
 
   const toggleModal = () => {
     console.log("mount", mount);
     setShowModal(!showModal);
-    try{
+    try {
       createCustomer();
-      createOrder();
-      createCharge();
+      //createOrder();
+      //createCharge();
     } catch (error) {
       console.log(error);
       setErrorModal(true);

@@ -10,8 +10,8 @@ export default function First() {
   return (
     <View style={styles.container}>
       <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
-      <Button title="IR A LO PERRÓN" onPress={() => {navigator.replace("AmountScreenS")}} />
-      <Button title="IR A LO PERRÓN Primero" onPress={() => {navigator.replace("FormScreenS")}} />
+      <Button title="IR A LO PERRÓN" onPress={() => {navigator.navigate("AmountScreenS")}} />
+      <Button title="IR A LO PERRÓN Primero" onPress={() => {navigator.navigate("FormScreenS")}} />
 
     </View>
   )

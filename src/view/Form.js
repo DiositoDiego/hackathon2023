@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
 import { useNavigation } from '@react-navigation/native';
+import { API_CONTEXT } from "../utils/endpoint";
 
 export default function FormScreen() {
     const navigator = useNavigation();
@@ -9,12 +10,39 @@ export default function FormScreen() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
+  const createCustomer = async () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch(`${API_CONTEXT}/customer/test`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            phone: phone,
+          }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.data !== null) {
+            console.log(data.data);
+            resolve(data.data);
+          } else {
+            console.log("Todo mal");
+            resolve([]);
+          }
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
   const handlePress = () => {
+    createCustomer();
     // Aquí puedes agregar la lógica para manejar la información del formulario
-    console.log("Nombre:", name);
-    console.log("Teléfono:", phone);
-    console.log("Correo:", email);
-    navigator.replace("AmountScreenS");
+    navigator.navigate("AmountScreenS");
   };
 
   return (

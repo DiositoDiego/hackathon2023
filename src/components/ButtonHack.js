@@ -34,7 +34,7 @@ export default function ButtonHack(props) {
     // Aquí puedes agregar la lógica para continuar con el pago
     //navegar a la pantalla de formulario
     setModalVisible(false);
-    navigator.replace("DetailsOrderScreenS");
+    navigator.navigate("DetailsOrderScreenS");
   };
 
   return (
