@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import { API_CONTEXT } from "../utils/endpoint";
+import { saveData, getData } from "../utils/Storage";
 
 export default function FormScreen() {
-    const navigator = useNavigation();
+  const navigator = useNavigation();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -28,8 +29,12 @@ export default function FormScreen() {
         if (response.ok) {
           const data = await response.json();
           if (data.data !== null) {
-
-            console.log({dataFromFORMMMMM:data.data});
+            console.log({ dataFromFORMMMMM: data.data });
+            saveData("customer", data.data.id);
+            console.log(
+              "id del customer guardada en el storage:",
+              data.data.id
+            );
             resolve(data.data);
           } else {
             console.log("Todo mal");
@@ -49,9 +54,7 @@ export default function FormScreen() {
 
   return (
     <View style={styles.container}>
-        <Text style={styles.textStyle}>
-            Llena el siguiente formulario:
-        </Text>
+      <Text style={styles.textStyle}>Llena el siguiente formulario:</Text>
       <View style={styles.formContainer}>
         <Text>Nombre:</Text>
         <TextInput
@@ -86,7 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
     //centrarlo el container en medio de la pantalla
     justifyContent: "center",
-    
+
     backgroundColor: "#fff",
     width: "100%",
     padding: 20,
@@ -110,10 +113,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#46D29D",
     marginTop: 20,
   },
-    textStyle: {
-        fontSize: 20,
-        fontFamily: "Roboto",
-        fontWeight: "bold",
-        marginBottom: 20,
-    },
+  textStyle: {
+    fontSize: 20,
+    fontFamily: "Roboto",
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
 });

@@ -8,26 +8,34 @@ import {
 } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { Image, Clipboard } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { getData } from "../utils/Storage";
 
 export default function DetailsOrderScreen() {
-  const route = useRoute();
-  const mount = route.params ? route.params.mount : null;
+  //const reference1 = await getData("reference");
+  /* onst mount = route.params ? route.params.mount : null;
 
-  console.log(mount);
+  console.log(mount); */
 
   //variable para la referencia
-  const [reference, setReference] = useState("1234-56789-10101");
+  //const [reference, setReference] = useState(reference1);
+  const reference = "17283-28382";
+  const amount = 50;
+
+  const datos = async () => {
+    reference = await getData("reference");
+    amount = await getData("amount");
+  };
+  datos();
 
   const handleCopyToClipboard = () => {
-    Clipboard.setString(reference); // Copia el texto al portapapeles
+    Clipboard.setString("17283-28382"); // Copia el texto al portapapeles
   };
   return (
     <View style={styles.container}>
       <Image style={styles.img} source={require("../../assets/bonanza.png")} />
       <View style={styles.formContainer}>
         <Text style={styles.subtitle2}>Monto a pagar:</Text>
-        <Text style={styles.subtitle2}>$100.00</Text>
+        <Text style={styles.subtitle2}>{amount}</Text>
         <Text style={styles.subtitle3}>
           *OXXO cobrará comisión por uso de servicio.
         </Text>

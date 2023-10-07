@@ -2,33 +2,34 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, Modal, TextInput } from "react-native";
 import ButtonHack from "../components/ButtonHack";
 import { Button, Icon } from "react-native-elements";
-import { useEffect } from "react";
 import { API_CONTEXT } from "../utils/endpoint";
+import { saveData, getData } from "../utils/Storage";
+import { useNavigation } from "@react-navigation/native";
 
 export default function AmountScreen() {
+  const navigator = useNavigation();
   const [showModal, setShowModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
-  const [mount, setMount] = useState("50");
-  const [customer, setCustomer] = useState({});
-  const [order, setOrder] = useState({});
-  const [charge, setCharge] = useState({});
-
-  const handleInputChange = (value) => {
+  /*   const [mount, setMount] = useState("50");
+   */
+  /* const handleInputChange = (value) => {
     setMount(value);
-  };
+  }; */
 
-  const createOrder = async () => {
+  const createOrder = () => {
     return new Promise(async (resolve, reject) => {
+      const idCustomer = await getData("customer");
+      console.log("id muy mona:", idCustomer);
       let response;
       try {
-        response = await fetch(`${API_CONTEXT}/customer/test`, {
+        response = await fetch(`${API_CONTEXT}/order/test`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             paymentMethod: "cash",
-            customerId: "cus_2ugwJMKq2NtZPAbmT",
+            customerId: idCustomer,
             productsList: [
               {
                 name: "Sabritas",
@@ -51,9 +52,15 @@ export default function AmountScreen() {
         if (response.ok) {
           const data = await response.json();
           if (data.data !== null) {
-            console.log({PonleAsyncStorageAEstoPorfi:data.data});
+            console.log("id de la order plis jala:", data.data.id);
+            console.log({ PonleAsyncStorageAEstoPorfi: data.data });
+            saveData("order", data.data);
+            saveData("orderId", data.data.id);
+            saveData("amount", data.data.amount);
+            console.log("order guardada en el storage:", data.data);
             resolve(data.data);
           } else {
+            console.log({ arriba: data });
             console.log("Todo mal");
             resolve([]);
           }
@@ -64,39 +71,46 @@ export default function AmountScreen() {
     });
   };
 
-  const createCharge = async () => {
-    setCharge(
-      await fetch(`${API_CONTEXT}/charge/test`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: 145,
-          paymentMethod: "cash",
-          orderId: order.id,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => data)
-    );
-  };
-
-  const toggleModal = () => {
-    console.log("mount", mount);
-    setShowModal(!showModal);
-    try {
-      //createCustomer();
-      //createOrder();
-      //createCharge();
-    } catch (error) {
-      console.log(error);
-      setErrorModal(true);
-    }
-    //Enviar el monto al modal
-  };
-  const toggleErrorModal = () => {
-    setErrorModal(!errorModal);
+  const createCharge = () => {
+    return new Promise(async (resolve, reject) => {
+      const idOrder = await getData("orderId");
+      console.log("id no muy mona de la order:", idOrder);
+      let response;
+      try {
+        response = await fetch(`${API_CONTEXT}/charge/test`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            amount: 145,
+            paymentMethod: "cash",
+            orderId: idOrder,
+          }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.data !== null) {
+            console.log({ PonleAsyncStorageAEstoPorfi: data.data });
+            saveData("charge", data.data);
+            saveData("reference", data.data.payment_method.reference);
+            console.log(
+              "id de la order guardada en el storage:",
+              data.data.payment_method.reference
+            );
+            console.log("order guardada en el storage:", data.data);
+            resolve(data.data);
+            //navegar a la pantalla de detalles
+          } else {
+            console.log({ abajo: data });
+            console.log("Todo mal");
+            resolve([]);
+          }
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
   };
 
   return (
@@ -118,35 +132,15 @@ export default function AmountScreen() {
         <Text style={styles.amount}>$</Text>
         <TextInput
           keyboardType="numeric"
-          onChangeText={handleInputChange}
+          /* onChangeText={handleInputChange} */
           style={styles.amount}
         >
-          {mount}
+          100
         </TextInput>
         <Text style={styles.amount}>MXN</Text>
       </View>
       {/* CONFIRMATION MODAL */}
-      <View style={styles.modalContainer}>
-        <Modal
-          visible={showModal}
-          animationType="slide"
-          transparent={true}
-          onRequestClose={toggleModal}
-        >
-          <ButtonHack onPress={toggleModal} mount={mount} />
-        </Modal>
-      </View>
-      {/* ERROR MODAL */}
-      <View style={styles.modalContainer}>
-        <Modal
-          visible={errorModal}
-          animationType="slide"
-          transparent={true}
-          onRequestClose={toggleErrorModal}
-        >
-          <ButtonHack onPress={toggleModal} mount={mount} />
-        </Modal>
-      </View>
+
       <View style={styles.footer}>
         {/* <View style={styles.boxShadoww}></View> */}
         <View style={styles.buttonContainer}>
@@ -154,9 +148,9 @@ export default function AmountScreen() {
             buttonStyle={styles.buttonStyle}
             title="Proceder al pago"
             onPress={() => {
-              //pasa el monto al modal
-              toggleModal();
-              //Enviar el monto al modal
+              createOrder();
+              createCharge();
+              navigator.navigate("DetailsOrderScreenS");
             }}
           />
         </View>
