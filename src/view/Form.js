@@ -10,10 +10,11 @@ export default function FormScreen() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
-  const createCustomer = async () => {
+  const createCustomer = () => {
     return new Promise(async (resolve, reject) => {
+      let response;
       try {
-        const response = await fetch(`${API_CONTEXT}/customer/test`, {
+        response = await fetch(`${API_CONTEXT}/customer/test`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -27,7 +28,8 @@ export default function FormScreen() {
         if (response.ok) {
           const data = await response.json();
           if (data.data !== null) {
-            console.log(data.data);
+
+            console.log({dataFromFORMMMMM:data.data});
             resolve(data.data);
           } else {
             console.log("Todo mal");
@@ -71,7 +73,7 @@ export default function FormScreen() {
         />
         <Button
           title="Proceder al pago"
-          onPress={handlePress}
+          onPress={() => handlePress()}
           buttonStyle={styles.buttonStyle}
         />
       </View>
