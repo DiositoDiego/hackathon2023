@@ -25,17 +25,13 @@ export default function ButtonHack(props) {
       visibilityTime: 2000,
     });
     setModalVisible(false);
-    navigator.replace("AmountScreenS");
+    // En la pantalla anterior
+    navigator.navigate("DetailsOrderScreen", { mount: mount });
+    console.log("mounto que se envia", mount);
   };
 
   const handleContinue = () => {
     // Aquí puedes agregar la lógica para continuar con el pago
-    Toast.show({
-      type: "success",
-      position: "bottom",
-      text1: "Pago completado",
-      visibilityTime: 2000,
-    });
     //navegar a la pantalla de formulario
     setModalVisible(false);
     navigator.replace("DetailsOrderScreenS");
