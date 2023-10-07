@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import AmountScreen from "../view/AmountScreen";
 import First from "../view/First";
+import FormScreen from "../view/Form";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,14 @@ export default function MainStack() {
           component={AmountScreen}
           options={{
             title: "Proceder al pago con OXXO Pay",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="FormScreenS"
+          component={FormScreen}
+          options={{
+            title: "Proceder al llenado del formulario",
             headerShown: false,
           }}
         />
