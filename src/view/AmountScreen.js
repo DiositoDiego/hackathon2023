@@ -13,7 +13,7 @@ export default function AmountScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Pago en efectivo con OXXO Pay</Text>
+        <Text style={styles.titlee}>Pago en efectivo con OXXO Pay</Text>
       </View>
       <View style={styles.containerTitle}>
         <Icon
@@ -33,7 +33,7 @@ export default function AmountScreen() {
         <Text style={styles.amount}>MXN</Text>
       </View>
       <View style={styles.footer}>
-        <View style={styles.boxShadow}></View>
+        <View style={styles.boxShadoww}></View>
         <View style={styles.buttonContainer}>
           <Button
             buttonStyle={styles.buttonStyle}
@@ -61,20 +61,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     width: "100%",
+    hwight: "10%",
   },
   header: {
     backgroundColor: "#46D29D",
     height: 90, // Cambié el valor a 70 píxeles
     width: "100%",
     justifyContent: "center",
-    paddingTop: 20,
   },
-  title: {
+  titlee: {
     alignSelf: "center",
     fontSize: 20,
     textAlign: "center",
     fontWeight: "bold",
-    color: "#fff",
+    color: "white",
   },
   buttonStyle: {
     borderRadius: 20,
@@ -90,23 +90,16 @@ const styles = StyleSheet.create({
     height: 130,
     backgroundColor: "#fff",
   },
-  boxShadow: {
+  boxShadoww: {
     width: "100%",
-    height: 10,
+    height: 20,
     backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.9,
-    elevation: 5,
+    elevation: 10,
   },
   footer: {
-    position: "absolute",
-    bottom: 0,
     width: "100%",
+    height: 100,
+    elevation: 10,
   },
   modalContainer: {
     flex: 1,
@@ -116,12 +109,13 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   modalContent: {
-    backgroundColor: "white",
     borderRadius: 10,
     padding: 20,
     height: 250,
     width: "100%",
     borderWidth: 2,
+    //Tornar opaco el fondo de la pantalla
+    opacity: 0.9,
   },
   title: {
     fontSize: 23,
