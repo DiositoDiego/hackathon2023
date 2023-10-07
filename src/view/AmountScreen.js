@@ -18,41 +18,50 @@ export default function AmountScreen() {
   };
 
   const createOrder = async () => {
-    setOrder(
-      await fetch(`${API_CONTEXT}/order/test`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          paymentMethod: "cash",
-          customerId: customer.id,
-          productsList: [
-            {
-              name: "Sabritas",
-              quantity: 2,
-              unit_price: 10,
-            },
-            {
-              name: "Barritas",
-              quantity: 3,
-              unit_price: 15,
-            },
-            {
-              name: "Maruchan",
-              quantity: 4,
-              unit_price: 20,
-            },
-          ],
-        }),
-      })
-        .then((response) => {
-          const response2 = response.json();
-          console.log({ response2 });
-          return response2;
-        })
-        .then((data) => data)
-    );
+    return new Promise(async (resolve, reject) => {
+      let response;
+      try {
+        response = await fetch(`${API_CONTEXT}/customer/test`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            paymentMethod: "cash",
+            customerId: "cus_2ugwJMKq2NtZPAbmT",
+            productsList: [
+              {
+                name: "Sabritas",
+                quantity: 2,
+                unit_price: 10,
+              },
+              {
+                name: "Barritas",
+                quantity: 3,
+                unit_price: 15,
+              },
+              {
+                name: "Maruchan",
+                quantity: 4,
+                unit_price: 20,
+              },
+            ],
+          }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.data !== null) {
+            console.log({PonleAsyncStorageAEstoPorfi:data.data});
+            resolve(data.data);
+          } else {
+            console.log("Todo mal");
+            resolve([]);
+          }
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
   };
 
   const createCharge = async () => {
