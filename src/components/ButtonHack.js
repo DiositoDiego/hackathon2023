@@ -4,13 +4,15 @@ import { Button, Icon } from "react-native-elements";
 import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
 
-export default function ButtonHack() {
+export default function ButtonHack(props) {
+  const { mount } = props;
   const [modalVisible, setModalVisible] = useState(false);
   const navigator = useNavigation();
+  console.log("mount", mount);
 
-  const monto = "1000";
   const handlePress = () => {
     setModalVisible(false);
+
     //navegar a la pantalla de formulario
   };
 
@@ -36,7 +38,7 @@ export default function ButtonHack() {
     });
     //navegar a la pantalla de formulario
     setModalVisible(false);
-    navigator.replace("FormScreenS");
+    navigator.replace("DetailsOrderScreenS");
   };
 
   return (
@@ -46,7 +48,7 @@ export default function ButtonHack() {
           <Text style={styles.title}>
             ¿Está seguro de proceder al pago con OXXO Pay?
           </Text>
-          <Text style={styles.subtitle}>Mondo a pagar: {monto}</Text>
+          <Text style={styles.subtitle}>Monto a pagar: ${mount}</Text>
 
           <View style={styles.buttonContainer}>
             <Button

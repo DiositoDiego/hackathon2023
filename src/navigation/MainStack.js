@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import AmountScreen from "../view/AmountScreen";
 import First from "../view/First";
 import FormScreen from "../view/Form";
+import DetailsOrderScreen from "../view/DetailsOrdenScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,14 @@ export default function MainStack() {
         <Stack.Screen
           name="FormScreenS"
           component={FormScreen}
+          options={{
+            title: "Proceder al llenado del formulario",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="DetailsOrderScreenS"
+          component={DetailsOrderScreen}
           options={{
             title: "Proceder al llenado del formulario",
             headerShown: false,

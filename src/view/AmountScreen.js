@@ -2,12 +2,20 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, Modal, TextInput } from "react-native";
 import ButtonHack from "../components/ButtonHack";
 import { Button, Icon } from "react-native-elements";
+import { useEffect } from "react";
 
 export default function AmountScreen() {
   const [showModal, setShowModal] = useState(false);
+  const [mount, setMount] = useState("50");
+
+  const handleInputChange = (value) => {
+    setMount(value);
+  };
 
   const toggleModal = () => {
+    console.log("mount", mount);
     setShowModal(!showModal);
+    //Enviar el monto al modal
   };
 
   return (
@@ -29,7 +37,14 @@ export default function AmountScreen() {
         <Text style={styles.subtitle2}>Monto a pagar: </Text>
       </View>
       <View style={styles.styleContainer}>
-        <TextInput style={styles.amount}>$1,000.00</TextInput>
+        <Text style={styles.amount}>$</Text>
+        <TextInput
+          keyboardType="numeric"
+          onChangeText={handleInputChange}
+          style={styles.amount}
+        >
+          {mount}
+        </TextInput>
         <Text style={styles.amount}>MXN</Text>
       </View>
       <View style={styles.footer}>
@@ -38,7 +53,11 @@ export default function AmountScreen() {
           <Button
             buttonStyle={styles.buttonStyle}
             title="Proceder al pago"
-            onPress={toggleModal}
+            onPress={() => {
+              //pasa el monto al modal
+              toggleModal();
+              //Enviar el monto al modal
+            }}
           />
         </View>
       </View>
@@ -49,7 +68,7 @@ export default function AmountScreen() {
           transparent={true}
           onRequestClose={toggleModal}
         >
-          <ButtonHack onPress={toggleModal} />
+          <ButtonHack onPress={toggleModal} mount={mount} />
         </Modal>
       </View>
     </View>
