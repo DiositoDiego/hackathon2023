@@ -77,7 +77,7 @@ export default function AmountScreen() {
     console.log("mount", mount);
     setShowModal(!showModal);
     try {
-      createCustomer();
+      //createCustomer();
       //createOrder();
       //createCharge();
     } catch (error) {
